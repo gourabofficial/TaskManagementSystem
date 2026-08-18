@@ -10,5 +10,7 @@ public interface IProjectRepository
 
     Task<List<Project>> GetAllAsync();
 
+    Task<Project?> UpdateAsync(Project project);
+
     Task SaveChangesAsync();
 }

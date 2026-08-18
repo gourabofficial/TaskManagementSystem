@@ -32,6 +32,12 @@ public class ProjectRepository : IProjectRepository
             .ToListAsync();
     }
 
+    public async Task<Project?> UpdateAsync(Project project)
+    {
+        _context.Projects.Update(project);
+        return await Task.FromResult(project);
+    }
+
     public async Task SaveChangesAsync()
     {
         await _context.SaveChangesAsync();

@@ -27,8 +27,36 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        return Ok();
+        var project = await _projectService.GetByIdAsync(id);
+        if (project == null)
+            return NotFound();
+
+        return Ok(project);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] string? searchTerm, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var filterDto = new FilterDto
+        {
+            SearchTerm = searchTerm,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+
+        var projects = await _projectService.GetAllAsync(filterDto);
+        return Ok(projects);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, UpdateProjectDto dto)
+    {
+        var updatedProject = await _projectService.UpdateAsync(id, dto);
+        if (updatedProject == null)
+            return NotFound();
+
+        return Ok(updatedProject);
     }
 }
